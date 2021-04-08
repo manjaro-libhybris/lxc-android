@@ -15,6 +15,11 @@ md5sums=('SKIP')
 
 package() {
     cd lxc-android
-    cp -r usr/ etc/ var/ $pkgdir
-    cp -r lib/ $pkgdir/usr/
+    cp -r etc/udev/rules.d/* $pkgdir/etc/udev/rules.d/
+    cp -r etc/NetworkManager/conf.d/* $pkgdir/etc/NetworkManager/conf.d/
+    cp -r lib/systemd/system/* $pkgdir/lib/systemd/system/
+    cp -r lib/udev/rules.d/* $pkgdir/lib/udev/rules.d/
+    cp -r usr/lib/* $pkgdir/usr/lib/
+    cp -r usr/sbin/* $pkgdir/usr/sbin/
+    cp -r var/lib/lxc/android/ $pkgdir/var/lib/lxc/    
 }
