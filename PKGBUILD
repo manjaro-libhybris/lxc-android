@@ -3,7 +3,7 @@
 pkgname=lxc-android
 provides=('lxc-android')
 pkgver=0.1
-pkgrel=1
+pkgrel=2
 pkgdesc="LXC container configuration for Android"
 arch=('any')
 url="https://github.com/gemian/lxc-android"
@@ -15,11 +15,12 @@ md5sums=('SKIP')
 
 package() {
     cd lxc-android
-    cp -r etc/udev/rules.d/* $pkgdir/etc/udev/rules.d/
-    cp -r etc/NetworkManager/conf.d/* $pkgdir/etc/NetworkManager/conf.d/
-    cp -r lib/systemd/system/* $pkgdir/lib/systemd/system/
-    cp -r lib/udev/rules.d/* $pkgdir/lib/udev/rules.d/
-    cp -r usr/lib/* $pkgdir/usr/lib/
-    cp -r usr/sbin/* $pkgdir/usr/sbin/
-    cp -r var/lib/lxc/android/ $pkgdir/var/lib/lxc/    
+    install -Dm644 etc/udev/rules.d/* -t "$pkgdir/etc/udev/rules.d/"
+    install -Dm644 etc/NetworkManager/conf.d/* -t  $pkgdir/etc/NetworkManager/conf.d/
+    install -Dm644 lib/systemd/system/* -t $pkgdir/lib/systemd/system/
+    install -Dm644 lib/udev/rules.d/* -t $pkgdir/lib/udev/rules.d/
+    install -Dm644 usr/lib/android-tools-adbd/* -t $pkgdir/usr/lib/android-tools-adbd/
+    install -Dm644 usr/lib/lxc-android/* -t $pkgdir/usr/lib/lxc-android/
+    install -Dm644 usr/sbin/* -t $pkgdir/usr/sbin/
+    install -Dm644 var/lib/lxc/android/* -t $pkgdir/var/lib/lxc/    
 }
