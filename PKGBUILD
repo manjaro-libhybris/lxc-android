@@ -17,10 +17,10 @@ package() {
     cd lxc-android
     install -Dm644 etc/udev/rules.d/* -t "$pkgdir/etc/udev/rules.d/"
     install -Dm644 etc/NetworkManager/conf.d/* -t  $pkgdir/etc/NetworkManager/conf.d/
-    install -Dm644 lib/systemd/system/* -t $pkgdir/lib/systemd/system/
-    install -Dm644 lib/udev/rules.d/* -t $pkgdir/lib/udev/rules.d/
+    install -Dm644 usr/lib/systemd/system/* -t $pkgdir/usr/lib/systemd/system/
+    install -Dm644 usr/lib/udev/rules.d/* -t $pkgdir/usr/lib/udev/rules.d/
     install -Dm644 usr/lib/android-tools-adbd/* -t $pkgdir/usr/lib/android-tools-adbd/
     install -Dm644 usr/lib/lxc-android/* -t $pkgdir/usr/lib/lxc-android/
-    install -Dm644 usr/sbin/* -t $pkgdir/usr/sbin/
+    install -Dm644 usr/bin/* -t $pkgdir/usr/bin/
     install -Dm644 var/lib/lxc/android/* -t $pkgdir/var/lib/lxc/    
 }
