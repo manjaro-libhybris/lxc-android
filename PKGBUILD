@@ -15,12 +15,31 @@ md5sums=('SKIP')
 
 package() {
     cd lxc-android
-    install -Dm644 etc/udev/rules.d/* -t "$pkgdir/etc/udev/rules.d/"
-    install -Dm644 etc/NetworkManager/conf.d/* -t  $pkgdir/etc/NetworkManager/conf.d/
-    install -Dm644 lib/systemd/system/* -t $pkgdir/lib/systemd/system/
-    install -Dm644 lib/udev/rules.d/* -t $pkgdir/lib/udev/rules.d/
-    install -Dm644 usr/lib/android-tools-adbd/* -t $pkgdir/usr/lib/android-tools-adbd/
-    install -Dm644 usr/lib/lxc-android/* -t $pkgdir/usr/lib/lxc-android/
-    install -Dm644 usr/sbin/* -t $pkgdir/usr/sbin/
-    install -Dm644 var/lib/lxc/android/* -t $pkgdir/var/lib/lxc/    
+    install -d ${pkgdir}/etc/udev/rules.d/
+  	install -m 644 etc/udev/rules.d/50-firmware.rules ${pkgdir}/etc/udev/rules.d/
+  	install -m 644 etc/udev/rules.d/60-persistent-v4l.rules ${pkgdir}/etc/udev/rules.d/
+  	install -m 644 etc/udev/rules.d/90-alsa-restore.rules ${pkgdir}/etc/udev/rules.d/
+  	install -m 644 etc/udev/rules.d/90-alsa-ucm.rules ${pkgdir}/etc/udev/rules.d/
+  
+  	install -d ${pkgdir}/etc/NetworkManager/conf.d/
+  	install -m 644 etc/NetworkManager/conf.d/99-wifi-disable-random-mac.conf ${pkgdir}/etc/NetworkManager/conf.d/99-wifi-disable-random-mac.conf
+  	
+  	install -d ${pkgdir}/usr/lib/systemd/system/
+  	install -m 644 lib/systemd/system/android-mount.service ${pkgdir}/usr/lib/systemd/system/
+  
+  	install -d ${pkgdir}/usr/lib/udev/rules.d/
+  	install -m 644 lib/udev/rules.d/65-android.rules ${pkgdir}/usr/lib/udev/rules.d/
+  	install -m 644 lib/udev/rules.d/99-android.rules ${pkgdir}/usr/lib/udev/rules.d/
+  
+  	install -d ${pkgdir}/usr/lib/android-tools-adbd/
+  	install -m 755 usr/lib/android-tools-adbd/pre-start ${pkgdir}/usr/lib/android-tools-adbd/
+  
+  	install -d ${pkgdir}/usr/lib/lxc-android/
+  	install -m 644 usr/lib/lxc-android/70-*.rules ${pkgdir}/usr/lib/lxc-android/
+  	install -m 755 usr/lib/lxc-android/copy-udev-rules ${pkgdir}/usr/lib/lxc-android/
+  	install -m 755 usr/lib/lxc-android/mount-android ${pkgdir}/usr/lib/lxc-android/
+  
+  	install -d ${pkgdir}/var/lib/lxc/android/
+  	install -m 644 var/lib/lxc/android/config ${pkgdir}/var/lib/lxc/android/
+  	install -m 755 var/lib/lxc/android/pre-start.sh ${pkgdir}/var/lib/lxc/android/
 }
