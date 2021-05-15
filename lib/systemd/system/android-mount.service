@@ -1,0 +1,12 @@
+[Unit]
+Description=mount android parts
+After=systemd-udev-settle.service local-fs.target
+Before=lxc@android.service
+Wants=systemd-udev-settle.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/lib/lxc-android/mount-android
+
+[Install]
+RequiredBy=local-fs.target

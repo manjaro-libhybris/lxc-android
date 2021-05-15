@@ -10,7 +10,7 @@ url="https://github.com/gemian/lxc-android"
 license=('Apache')
 depends=('lxc' 'cpio')
 makedepends=('git')
-source=('lxc-android::git+https://github.com/hybris-mobian/lxc-android.git#branch=bullseye')
+source=('lxc-android::git+https://github.com/manjaro-libhybris/lxc-android.git')
 md5sums=('SKIP')
 
 package() {
