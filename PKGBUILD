@@ -45,4 +45,6 @@ package() {
   	install -d ${pkgdir}/var/lib/lxc/android/rootfs
   	install -m 644 var/lib/lxc/android/config ${pkgdir}/var/lib/lxc/android/
   	install -m 755 var/lib/lxc/android/pre-start.sh ${pkgdir}/var/lib/lxc/android/
+    
+  	install -d ${pkgdir}/vendor
 }
