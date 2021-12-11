@@ -34,38 +34,38 @@ parse_mount_flags() {
 
 echo "checking for vendor mount point"
 
-vendor_images="/userdata/vendor.img /var/lib/lxc/android/vendor.img"
-for image in $vendor_images; do
-    if [ -e $image ]; then
-        echo "mounting vendor from $image"
-        mount $image /vendor -o ro
-    fi
-done
-
 sys_vendor="/sys/firmware/devicetree/base/firmware/android/fstab/vendor"
-if [ -e $sys_vendor ] && ! mountpoint -q -- /vendor; then
+if [ -e $sys_vendor ]; then
     label=$(cat $sys_vendor/dev | awk -F/ '{print $NF}')
     path=$(find_partition_path $label)
-    [ ! -e "$path" ] && echo "Error vendor not found" && exit
+    [ ! -e "$path" ] && exit "Error vendor not found"
     type=$(cat $sys_vendor/type)
     options=$(parse_mount_flags $(cat $sys_vendor/mnt_flags))
     echo "mounting $path as /vendor"
     mount $path /vendor -t $type -o $options
 fi
 
-# Bind-mount /vendor if we should. Legacy devices do not have /vendor
-# on a separate partition and we should handle that.
-if [ -n "${BIND_MOUNT_PATH}" ] && mountpoint -q -- /vendor; then
-    # Mountpoint, bind-mount. We don't use rbind as we're going
-    # to go through the fstab anyways.
-    mount -o bind /vendor "${BIND_MOUNT_PATH}/vendor"
+if [ -d "/system/halium/vendor" ]; then
+    mount -t overlay overlay -o lowerdir=/system/halium/vendor:/vendor /vendor
 fi
+
+if [ -d "/opt/halium-overlay/vendor" ]; then
+    mount -t overlay overlay -o lowerdir=/opt/halium-overlay/vendor:/vendor /vendor
+fi
+
+if [ -d "/opt/halium-overlay/system" ]; then
+    mount -t overlay overlay -o lowerdir=/opt/halium-overlay/system:/android/system /system
+    mount -o bind /android/system /var/lib/lxc/android/rootfs/system
+fi
+
+# yggdrasil-specific overrides
+mount -o bind /system/lib/modules /vendor/lib/modules
 
 sys_persist="/sys/firmware/devicetree/base/firmware/android/fstab/persist"
 if [ -e $sys_persist ]; then
     label=$(cat $sys_persist/dev | awk -F/ '{print $NF}')
     path=$(find_partition_path $label)
-    # [ ! -e "$path" ] && echo "Error persist not found" && exit
+    # [ ! -e "$path" ] && exit "Error persist not found"
     type=$(cat $sys_persist/type)
     options=$(parse_mount_flags $(cat $sys_persist/mnt_flags))
     echo "mounting $path as /mnt/vendor/persist"
@@ -74,7 +74,7 @@ fi
 
 # Assume there's only one fstab in vendor
 fstab=$(ls /vendor/etc/fstab*)
-[ -z "$fstab" ] && echo "fstab not found" && exit
+[ ! -e "$fstab" ] && echo "fstab not found" && exit
 
 echo "checking fstab $fstab for additional mount points"
 
@@ -104,21 +104,4 @@ cat ${fstab} | while read line; do
     mkdir -p $2
     echo "mounting $path as $2"
     mount $path $2 -t $3 -o $(parse_mount_flags $4)
-
-    # Bind mount on rootfs if we should
-    if [ -n "${BIND_MOUNT_PATH}" ] && [[ ${2} != /mnt/* ]]; then
-        # /mnt is recursively binded via the LXC configuration
-        mount -o bind ${2} "${BIND_MOUNT_PATH}/${2}"
-    fi
 done
-
-echo "checking if system overlay exists"
-if [ -d "/usr/lib/droid-system-overlay" ]; then
-    echo "mounting android's system overlay"
-    mount -t overlay overlay -o lowerdir=/usr/lib/droid-system-overlay:/var/lib/lxc/android/rootfs/system /var/lib/lxc/android/rootfs/system
-fi
-echo "checking if vendor overlay exists"
-if [ -d "/usr/lib/droid-vendor-overlay" ]; then
-    echo "mounting android's vendor overlay"
-    mount -t overlay overlay -o lowerdir=/usr/lib/droid-vendor-overlay:/var/lib/lxc/android/rootfs/vendor /var/lib/lxc/android/rootfs/vendor
-fi
