@@ -35,7 +35,7 @@ package() {
   	install -m 755 usr/lib/android-tools-adbd/pre-start ${pkgdir}/usr/lib/android-tools-adbd/
   	
   	install -d ${pkgdir}/usr/bin
-  	install -m 755 usr/sbin/mount-android.sh ${pkgdir}/usr/bin/mount-android.sh
+  	install -m 755 usr/bin/mount-android.sh ${pkgdir}/usr/bin/mount-android.sh
   
   	install -d ${pkgdir}/usr/lib/lxc-android/
   	install -m 644 usr/lib/lxc-android/70-*.rules ${pkgdir}/usr/lib/lxc-android/
@@ -46,5 +46,6 @@ package() {
   	install -m 644 var/lib/lxc/android/config ${pkgdir}/var/lib/lxc/android/
   	install -m 755 var/lib/lxc/android/pre-start.sh ${pkgdir}/var/lib/lxc/android/
     
-  	install -d ${pkgdir}/vendor
+    ln -s /android/apex ${pkgdir}/apex
+    ln -s /android/vendor ${pkgdir}/vendor
 }
