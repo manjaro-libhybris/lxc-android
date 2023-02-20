@@ -1,12 +1,12 @@
-# Contributor: Bhushan Shah < bshah at kde dot org >
+# Maintainer: Bardia Moshiri <fakeshell@bardia.tech>
 
 pkgname=lxc-android
 provides=('lxc-android')
-pkgver=11.0
+pkgver=12.0
 pkgrel=1
 pkgdesc="LXC container configuration for Android"
 arch=('any')
-url="https://github.com/gemian/lxc-android"
+url="https://github.com/droidian/lxc-android"
 license=('Apache')
 depends=('lxc' 'cpio')
 makedepends=('git')
@@ -24,6 +24,9 @@ package() {
     install -d ${pkgdir}/etc/NetworkManager/conf.d/
     install -m 644 etc/NetworkManager/conf.d/99-wifi-disable-random-mac.conf ${pkgdir}/etc/NetworkManager/conf.d/99-wifi-disable-random-mac.conf
 
+    install -d ${pkgdir}/etc/systemd/system/
+    install -m 644 etc/systemd/system/lxc@android.service ${pkgdir}/etc/systemd/system/
+
     install -d ${pkgdir}/usr/lib/systemd/system/
     install -m 644 lib/systemd/system/android-mount.service ${pkgdir}/usr/lib/systemd/system/
 
@@ -38,8 +41,9 @@ package() {
     install -m 755 usr/bin/mount-android.sh ${pkgdir}/usr/bin/mount-android.sh
 
     install -d ${pkgdir}/usr/lib/lxc-android/
-    install -m 755 usr/lib/lxc-android/copy-udev-rules ${pkgdir}/usr/lib/lxc-android/
     install -m 755 usr/lib/lxc-android/mount-android ${pkgdir}/usr/lib/lxc-android/
+    install -m 755 usr/lib/lxc-android/lxc-android-stop ${pkgdir}/usr/lib/lxc-android/
+    install -m 755 usr/lib/lxc-android/lxc-android-notify ${pkgdir}/usr/lib/lxc-android/
 
     install -d ${pkgdir}/var/lib/lxc/android/rootfs
     install -m 644 var/lib/lxc/android/config ${pkgdir}/var/lib/lxc/android/
