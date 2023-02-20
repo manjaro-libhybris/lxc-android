@@ -38,7 +38,6 @@ package() {
     install -m 755 usr/bin/mount-android.sh ${pkgdir}/usr/bin/mount-android.sh
 
     install -d ${pkgdir}/usr/lib/lxc-android/
-    install -m 644 usr/lib/lxc-android/70-*.rules ${pkgdir}/usr/lib/lxc-android/
     install -m 755 usr/lib/lxc-android/copy-udev-rules ${pkgdir}/usr/lib/lxc-android/
     install -m 755 usr/lib/lxc-android/mount-android ${pkgdir}/usr/lib/lxc-android/
 
