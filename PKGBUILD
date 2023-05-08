@@ -3,7 +3,7 @@
 pkgname=lxc-android
 provides=('lxc-android')
 pkgver=12.0
-pkgrel=1
+pkgrel=2
 pkgdesc="LXC container configuration for Android"
 arch=('any')
 url="https://github.com/droidian/lxc-android"
@@ -33,9 +33,6 @@ package() {
     install -d ${pkgdir}/usr/lib/udev/rules.d/
     install -m 644 lib/udev/rules.d/65-android.rules ${pkgdir}/usr/lib/udev/rules.d/
     install -m 644 lib/udev/rules.d/99-android.rules ${pkgdir}/usr/lib/udev/rules.d/
-
-    install -d ${pkgdir}/usr/lib/android-tools-adbd/
-    install -m 755 usr/lib/android-tools-adbd/pre-start ${pkgdir}/usr/lib/android-tools-adbd/
 
     install -d ${pkgdir}/usr/bin
     install -m 755 usr/bin/mount-android.sh ${pkgdir}/usr/bin/mount-android.sh
