@@ -3,7 +3,7 @@
 pkgname=lxc-android
 provides=('lxc-android')
 pkgver=12.0
-pkgrel=2
+pkgrel=3
 pkgdesc="LXC container configuration for Android"
 arch=('any')
 url="https://github.com/droidian/lxc-android"
